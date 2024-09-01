@@ -1,1 +1,6 @@
 NPCs.ProjectileRingEnemy.DisplayName: Projectile Ring Enemy
+
+Projectiles: {
+	GlowingPellet.DisplayName: Glowing Pellet
+	GlowyOrb.DisplayName: Glowy Orb
+}

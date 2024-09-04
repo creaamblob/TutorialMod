@@ -34,7 +34,7 @@ namespace TutorialMod
             Vector2 position = NPC.Center - Main.screenPosition;
             Rectangle frame = NPC.frame;
             Vector2 origin = frame.Size() * 0.5f;
-            Color color = Main.DiscoColor;
+            Color color = Color.Aqua;
             float rotation = NPC.rotation;
             SpriteEffects se = NPC.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
@@ -55,24 +55,50 @@ namespace TutorialMod
                 NPC.ai[1]++;
                 Timer = 0;
             }*/
-            ShootBasicRing();
+            //ShootBasicRing();
 
             NPC.TargetClosest();
             RotationTimer += 0.2f;
+
+            CollisionMaze();
+            if (++ProjectileCD2 % 60 == 0)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(Main.player[NPC.target].Center), ModContent.ProjectileType<ExampleDeathray>(), 50, 1f);
+            }
+            /*if (++ProjectileCD2 % 90 == 0)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(Main.player[NPC.target].Center) * 7, ModContent.ProjectileType<BigOrb>(), 50, 1f);
+            }*/
+
+            void CollisionMaze()
+            {
+                if (++ProjectileCD % 150 == 0)
+                {
+                    for (int i = -4608; i < 4608; i += 512)
+                    {
+                        for (int j = -4608; j < 4608; j += 512)
+                        {
+                            Vector2 pos = NPC.Center + new Vector2(i, j);
+                            if (Main.player[NPC.target].Distance(pos) > 512)
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, pos.DirectionTo(Main.player[NPC.target].Center) * 4, ModContent.ProjectileType<BigOrb>(), 50, 0);
+                        }
+                    }
+                }
+            }
 
             void ShootBasicRing()
             {
                 int amount = 16;
                 //Shoot thrice a second
-                if (++ProjectileCD % 30 == 0)
+                /*if (++ProjectileCD % 30 == 0)
                 {
                     for (int i = 0; i < amount; i++)
                     {
-                        Vector2 velocity = new Vector2(0, 7).RotatedBy(MathHelper.TwoPi * i / amount + (RotationTimer * 5));
+                        Vector2 velocity = new Vector2(0, 12).RotatedBy(MathHelper.TwoPi * i / amount + (RotationTimer * 5));
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<GlowingPellet>(), 50, 1);
                     }
-                }
-                if (++ProjectileCD2 < 30 && ProjectileCD % 5 == 0)
+                }*/
+                if (++ProjectileCD2 < 30 && ++ProjectileCD % 5 == 0)
                 {
                     for (int i = 0; i < 5; i++)
                     {

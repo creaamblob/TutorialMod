@@ -48,7 +48,7 @@ namespace TutorialMod
 
             for (int i = 0; i < lenght; i++)
             {
-                Color col = Color.Gray * ((lenght - i) / (float)lenght);
+                Color col = lightColor * ((lenght - i) / (float)lenght);
                 Vector2 pos = Projectile.oldPos[i] + (Projectile.Size * 0.5f) - Main.screenPosition;
                 Main.EntitySpriteDraw(sprite, pos, null, col, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None);
             }

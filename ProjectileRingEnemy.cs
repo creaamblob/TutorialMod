@@ -31,10 +31,10 @@ namespace TutorialMod
             {
                 sprite = ModContent.Request<Texture2D>("TutorialMod/ProjectileRingEnemy_Glow").Value;
             }
-            Vector2 position = NPC.Center - Main.screenPosition;
+            Vector2 position = NPC.Center - new Vector2(0, 4) - Main.screenPosition;
             Rectangle frame = NPC.frame;
             Vector2 origin = frame.Size() * 0.5f;
-            Color color = Color.Aqua;
+            Color color = Main.DiscoColor;
             float rotation = NPC.rotation;
             SpriteEffects se = NPC.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
@@ -57,48 +57,29 @@ namespace TutorialMod
             }*/
             //ShootBasicRing();
 
+            //CreateProjectileRingAroundItself();
             NPC.TargetClosest();
             RotationTimer += 0.2f;
-
-            CollisionMaze();
-            if (++ProjectileCD2 % 60 == 0)
+            if (++ProjectileCD2 % 90 == 0)
             {
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(Main.player[NPC.target].Center), ModContent.ProjectileType<ExampleDeathray>(), 50, 1f);
-            }
-            /*if (++ProjectileCD2 % 90 == 0)
-            {
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(Main.player[NPC.target].Center) * 7, ModContent.ProjectileType<BigOrb>(), 50, 1f);
-            }*/
-
-            void CollisionMaze()
-            {
-                if (++ProjectileCD % 150 == 0)
-                {
-                    for (int i = -4608; i < 4608; i += 512)
-                    {
-                        for (int j = -4608; j < 4608; j += 512)
-                        {
-                            Vector2 pos = NPC.Center + new Vector2(i, j);
-                            if (Main.player[NPC.target].Distance(pos) > 512)
-                                Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, pos.DirectionTo(Main.player[NPC.target].Center) * 4, ModContent.ProjectileType<BigOrb>(), 50, 0);
-                        }
-                    }
-                }
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(Main.player[NPC.target].Center) * 7, ModContent.ProjectileType<ExampleDeathray>(), 50, 1f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(Main.player[NPC.target].Center).RotatedBy(MathHelper.PiOver4 / 2) * 7, ModContent.ProjectileType<ExampleDeathrayEXTEND>(), 50, 1f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(Main.player[NPC.target].Center).RotatedBy(MathHelper.PiOver4 / -2) * 7, ModContent.ProjectileType<ExampleDeathrayEXTEND>(), 50, 1f);
             }
 
             void ShootBasicRing()
             {
-                int amount = 16;
+                int amount = 4;
                 //Shoot thrice a second
-                /*if (++ProjectileCD % 30 == 0)
+                if (++ProjectileCD % 150 == 0)
                 {
                     for (int i = 0; i < amount; i++)
                     {
-                        Vector2 velocity = new Vector2(0, 12).RotatedBy(MathHelper.TwoPi * i / amount + (RotationTimer * 5));
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<GlowingPellet>(), 50, 1);
+                        Vector2 velocity = new Vector2(0, 12).RotatedBy(MathHelper.TwoPi * i / amount);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<ExampleDeathray>(), 50, 1);
                     }
-                }*/
-                if (++ProjectileCD2 < 30 && ++ProjectileCD % 5 == 0)
+                }
+                /*if (++ProjectileCD2 < 30 && ++ProjectileCD % 5 == 0)
                 {
                     for (int i = 0; i < 5; i++)
                     {
@@ -106,8 +87,8 @@ namespace TutorialMod
                         Vector2 pos = NPC.Center + Vector2.One.RotatedBy(rot) * (float)(Math.Sin(ProjectileCD / 2f) * 50);
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, pos.DirectionTo(NPC.Center) * -3, ModContent.ProjectileType<GlowyOrb>(), 50, 1);
                     }
-                }
-                if (ProjectileCD2 > 60) ProjectileCD2 = 0;
+                }*/
+                //if (ProjectileCD2 > 60) ProjectileCD2 = 0;
             }
             void CreateProjectileRingAroundItself()
             {
@@ -115,14 +96,14 @@ namespace TutorialMod
                 float radius = (float)(Math.Sin(RotationTimer * 5) * 100f);
 
                 //Shoot every 5 frames
-                if (++ProjectileCD % 5 == 0)
+                if (++ProjectileCD % 125 == 0)
                 {
                     for (int i = 0; i < amount; i++)
                     {
                         float rot = MathHelper.TwoPi * i / amount + RotationTimer;
 
-                        Vector2 pos = NPC.Center + Vector2.One.RotatedBy(rot) * radius;
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, Vector2.Zero, ProjectileID.DD2DarkMageBolt, 50, 0);
+                        Vector2 pos = NPC.Center + Vector2.One.RotatedBy(rot) * 200;
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, pos.DirectionTo(NPC.Center) * 1, ModContent.ProjectileType<ExampleDeathrayEXTEND>(), 50, 0);
                     }
                 }
             }

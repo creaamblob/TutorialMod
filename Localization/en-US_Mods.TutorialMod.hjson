@@ -5,4 +5,5 @@ Projectiles: {
 	GlowyOrb.DisplayName: Glowy Orb
 	BigOrb.DisplayName: Big Orb
 	ExampleDeathray.DisplayName: Example Deathray
+	ExampleDeathrayEXTEND.DisplayName: Example Deathray E X T E N D
 }

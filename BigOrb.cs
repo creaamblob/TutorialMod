@@ -17,18 +17,19 @@ namespace TutorialMod
 
             Projectile.hostile = true;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 150;
+            Projectile.timeLeft = 90;
         }
         public override Color? GetAlpha(Color lightColor) => Color.White;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            if (targetHitbox.Distance(Projectile.Center) < 128)
+            if (targetHitbox.Distance(Projectile.Center) < (128 * Projectile.scale) && Projectile.active)
+            {
                 return true;
+            }
             else return false;
         }
         public override void AI()
         {
-            //Projectile.scale += 0.01f;
         }
     }
 }
